@@ -50,6 +50,15 @@ module.exports = {
         ]
       },
       {
+        title: 'Module 1',
+        path: '/notes/module-1/',
+        sidebarDepth: 2,
+        collapsable: true,
+        children: [
+          '/notes/module-1/react'
+        ]
+      },
+      {
         title: 'Module 2',
         path: '/notes/module-2/',
         sidebarDepth: 2,
@@ -58,6 +67,24 @@ module.exports = {
           '/notes/module-2/rest',
           '/notes/module-2/basic-auth',
           '/notes/module-2/jwt'
+        ]
+      },
+      {
+        title: 'Module 3',
+        path: '/notes/module-3/',
+        sidebarDepth: 2,
+        collapsable: true,
+        children: [
+          '/notes/module-3/containerisation'
+        ]
+      },
+      {
+        title: 'Extensions',
+        path: '/notes/extensions/',
+        sidebarDepth: 2,
+        collapsable: true,
+        children: [
+          '/notes/extensions/cryptography'
         ]
       }
     ]
