@@ -21,14 +21,14 @@ export const pagesComponents = {
   "v-14735b36": defineAsyncComponent(() => import(/* webpackChunkName: "v-14735b36" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/bootcamp/classes.html.vue")),
   // path: /bootcamp/objects.html
   "v-93cc99f0": defineAsyncComponent(() => import(/* webpackChunkName: "v-93cc99f0" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/bootcamp/objects.html.vue")),
-  // path: /deployment/
-  "v-32704571": defineAsyncComponent(() => import(/* webpackChunkName: "v-32704571" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/index.html.vue")),
-  // path: /deployment/containerisation.html
-  "v-1232f444": defineAsyncComponent(() => import(/* webpackChunkName: "v-1232f444" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/containerisation.html.vue")),
   // path: /extensions/
   "v-235abe02": defineAsyncComponent(() => import(/* webpackChunkName: "v-235abe02" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/extensions/index.html.vue")),
   // path: /extensions/cryptography.html
   "v-fae994aa": defineAsyncComponent(() => import(/* webpackChunkName: "v-fae994aa" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/extensions/cryptography.html.vue")),
+  // path: /deployment/
+  "v-32704571": defineAsyncComponent(() => import(/* webpackChunkName: "v-32704571" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/index.html.vue")),
+  // path: /deployment/containerisation.html
+  "v-1232f444": defineAsyncComponent(() => import(/* webpackChunkName: "v-1232f444" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/containerisation.html.vue")),
   // path: /frontend/
   "v-06198984": defineAsyncComponent(() => import(/* webpackChunkName: "v-06198984" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/frontend/index.html.vue")),
   // path: /frontend/react.html

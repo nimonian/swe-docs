@@ -1,4 +1,4 @@
-export const data = JSON.parse("{\"key\":\"v-93cc99f0\",\"path\":\"/bootcamp/objects.html\",\"title\":\"Objects\",\"lang\":\"en-US\",\"frontmatter\":{},\"headers\":[],\"git\":{\"updatedTime\":null,\"contributors\":[]},\"filePathRelative\":\"bootcamp/objects.md\"}")
+export const data = JSON.parse("{\"key\":\"v-93cc99f0\",\"path\":\"/bootcamp/objects.html\",\"title\":\"Objects\",\"lang\":\"en-US\",\"frontmatter\":{},\"headers\":[],\"git\":{\"updatedTime\":1686673560000,\"contributors\":[{\"name\":\"nimonian\",\"email\":\"nimon@hotmail.co.uk\",\"commits\":1}]},\"filePathRelative\":\"bootcamp/objects.md\"}")
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()

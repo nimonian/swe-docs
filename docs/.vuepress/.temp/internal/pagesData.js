@@ -19,14 +19,14 @@ export const pagesData = {
   "v-14735b36": () => import(/* webpackChunkName: "v-14735b36" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/bootcamp/classes.html.js").then(({ data }) => data),
   // path: /bootcamp/objects.html
   "v-93cc99f0": () => import(/* webpackChunkName: "v-93cc99f0" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/bootcamp/objects.html.js").then(({ data }) => data),
-  // path: /deployment/
-  "v-32704571": () => import(/* webpackChunkName: "v-32704571" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/index.html.js").then(({ data }) => data),
-  // path: /deployment/containerisation.html
-  "v-1232f444": () => import(/* webpackChunkName: "v-1232f444" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/containerisation.html.js").then(({ data }) => data),
   // path: /extensions/
   "v-235abe02": () => import(/* webpackChunkName: "v-235abe02" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/extensions/index.html.js").then(({ data }) => data),
   // path: /extensions/cryptography.html
   "v-fae994aa": () => import(/* webpackChunkName: "v-fae994aa" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/extensions/cryptography.html.js").then(({ data }) => data),
+  // path: /deployment/
+  "v-32704571": () => import(/* webpackChunkName: "v-32704571" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/index.html.js").then(({ data }) => data),
+  // path: /deployment/containerisation.html
+  "v-1232f444": () => import(/* webpackChunkName: "v-1232f444" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/deployment/containerisation.html.js").then(({ data }) => data),
   // path: /frontend/
   "v-06198984": () => import(/* webpackChunkName: "v-06198984" */"/home/shai/Repos/swe/swe-docs/docs/.vuepress/.temp/pages/frontend/index.html.js").then(({ data }) => data),
   // path: /frontend/react.html

@@ -2,10 +2,13 @@
 
 If a user needed to type their email and password every time they wanted to
 request something from the server, they would very quickly stop using the app.
-We want to **authenticate once** with email and password, and then **authorise**
+We want to **authenticate once** with email and password, and then **authorize**
 further requests without authenticating again.
 
-A very common implementation of this strategy is _javascript web tokens_.
+A very common implementation of this strategy is _javascript web tokens_. A
+secure, temporary token gets saved to the device the user is working on, so they
+have "authorized the device" to make authenticated requests on their behalf
+until the token expires.
 
 ## What are JWTs?
 
@@ -53,28 +56,28 @@ We'll use an algorithm I just invented called `stupidHash()`:
 1.  Map each letter to its position in the alphabet (e.g m => 13)
 1.  Multiply the numbers together
 
-We get the hash `896313600`. Now, when Morpheus gives us his password, we send a
-token `morpheus.896313600` to our user on the frontend. A few minutes later, a
-user sends it back to us, and says "Hey, I got this special token you made for
-me! Can I have Morpheus' secret document from the database?"
+We get the hash `896313600`. Now, when Morpheus gives us his password, we send
+the token `morpheus.896313600` to our user on the frontend. A few minutes later,
+a user sends the token back to us, and says "Hey, I got this special token you
+made for me! Can I have Morpheus' secret document from the database?"
 
-This is better, but if an attacker knew our algorithm, they could take the
-username `morpheus` and work out the hash `896313600` and now they have the
-exact same token. Damn.
+This is better, but if an attacker knew our stupid hash algorithm, they could
+take the username `morpheus` and work out the hash `896313600` and now they have
+the exact same token. Damn.
 
 ### Signing tokens
 
 Well, what if we chose a `SECRET_PHRASE` and kept that on the server? If we
 appended this to the username before hashing it, the result is called a
-**signature**. When we maintain a secret and mix it in with some data before
-hashing it, this is called **signing** the data.
+**signature**. When we maintain a constant secret and mix it in with some data
+before hashing it, this is called **signing** the data.
 
 ::: tip
 
-We use a secret key to _sign_ the token. Signing the token means we hide
-something in the token which comes uniquely from our server. When the token is
-given back to us, we can be certain that it was signed by our server, and is
-therefore an authentic token.
+We use a secret to _sign_ the token. Signing the token means we hide something
+in the token which comes uniquely from our server. When the token is given back
+to us, we can be certain that it was signed by our server, and is therefore an
+authentic token.
 
 :::
 
@@ -98,7 +101,7 @@ hacked by brute force.
 
 ### So what are JWTs?
 
-A JWT is formed by taking a javascript object such as
+A JWT is formed by taking a payload such as
 
 ```js
 {
@@ -127,8 +130,8 @@ const token = jwt.sign({ name: 'morpheus' }, 'thereisnospoon')
 ```
 
 Of course, `'thereisnospoon'` is a poor secret - we should generate a large
-random string (256 bits or 32 bytes) and store it as an environment variable so
-we can use it in our code without hard-coding it in:
+random string (32 bytes) and store it as an environment variable so we can use
+it in our code without hard-coding it in:
 
 ```js
 require('dotenv').config()
@@ -139,20 +142,24 @@ const token = jwt.sign({ name: 'morpheus' }, process.env.TOKEN_SECRET)
 
 The whole flow looks like this:
 
-1.  A user sends their username and password to a server endpoint such as
+1.  The user signs up and makes an account with the
+    [basic auth](/backend/basic-auth) protocol
+
+1.  Later, a user sends their username and password to a server endpoint such as
     `/api/v1/login`
 
 1.  The server checks the username and password against the hash in our database
     with `bcypt.compare()`
 
-1.  If successful, the server signs an object containing some identifying
+1.  If successful, the server _signs_ an object containing some identifying
     information for the user, thus creating a JWT. The object in the payload
     should **not** contain the password or the hashed password for the user.
 
 1.  The server sends this JWT to the user and the frontend stores it in
-    `localStorage` or as a cookie.
+    `localStorage` or as a cookie. Because the user has a valid token, they are
+    "logged in".
 
-1.  If the user needs to access a protected resource, they send the JWT. The
+1.  When the user needs to access a protected resource, they send the JWT. The
     server uses `jwt.verify()` to check that the token was signed with our
     secret and that the payload hasn't been tampered.
 
@@ -165,7 +172,22 @@ middleware function so it can be dropped in to any protected resource.
 
 :::
 
+::: tip
+
+In your mental model, you can consider the user to be "logged in" provided they
+possess a valid, active token on their device. Otherwise, they are logged out.
+
+Really, it is the device which is logged in: if the user switches devices they
+would need to sign in there to get a token on that device. We rarely make this
+distinction, but we do sometimes say things like "are you logged in on your
+phone?" which basically means "does your phone have a valid token right now?"
+
+:::
+
 ## Refresh tokens
+
+Have you ever been asked to change your password on a regular basis? Annoying
+isn't it? With refresh tokens, we can automate this process.
 
 The JWT we made above and sent to the user is called an **access token**. The
 problem with our method so far is that, if our access token got stolen, it gives
@@ -194,16 +216,49 @@ No - this is where **refresh tokens** come in.
     create two tokens: one which expires called the `access_token`, and another
     which does not expire called the `refresh_token`.
 
-1.  We save the refresh token in a list of `validRefreshTokens` on the server
-    (ideally in a database) but an array will do for now.
-
 1.  We send them both back to the user, and the user uses the access token to
     get secrets from the server until it expires.
 
 1.  Now, if the user needs a new `access_token`, they can send their refresh
     token to an api endpoint such as `/api/v1/refresh` - if the token is
-    verified as authentic, and if it is in the list of valid tokens, then we
-    grant a new `access_token`.
+    verified as authentic, then we grant a new `access_token` to the user.
 
-When the user wants to sign out, we remove their refresh token from the list of
-valid refresh tokens.
+### Security concerns
+
+Obviously, we do not want the attacker to get their hands on the refresh token!
+It is impossible to completely secure any system, the point is to make it as
+secure as possible.
+
+- access tokens are less powerful (they expire) and are sent very frequently
+  (every request)
+- refresh tokens are more powerful, and are sent very infrequently
+
+This is a good solution which balances the power of the token with the
+likelihood of it getting compromised.
+
+## Conclusions
+
+Without our knowledge of [encryption](/backend/encryption),
+[hashing](/backend/hashing), [basic auth](/backend/basic-auth) and tokens, we
+have enough knowledge to appreciate how secure applications are built.
+
+We can encrypt data in our database, we can create users with hashed passwords,
+let them authenticate to sign in, and authorise access to secure resources with
+tokens.
+
+It is important to note, however, that creating your own authentication system
+from scratch like this should be treated as an exercise. If you are creating a
+real-world application that requires authentication, don't handle it on your
+own. Even if you do it well, new exploits will erode your implementation over
+time and you probably can't maintain your security. Use well respected
+third-party systems or work with security experts to handle authentication.
+
+::: warning
+
+Don't create your own authentication system for real applications. You cannot
+keep up with the rapidly changing security landscape and your system will get
+pwned.
+
+Work with respected third-party auth providers and security experts.
+
+:::
